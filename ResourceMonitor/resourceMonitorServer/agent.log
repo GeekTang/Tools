@@ -1,0 +1,5 @@
+Agent: 				Default Local Lib Agent
+Resource Name: 		Cassandra Resource
+Resource Description:	Cassandra Resource is a type of database resource, this resource provide data access service, and as the general resource, it not related to any app locagical, the ifformation of this resource most related to the server's performance and status. Not the data structure.
+Resource Status: 		online
+Resource Details: 		Cassandra status: online
