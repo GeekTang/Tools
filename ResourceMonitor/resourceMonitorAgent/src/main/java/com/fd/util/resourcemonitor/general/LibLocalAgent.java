@@ -3,6 +3,7 @@
  */
 package com.fd.util.resourcemonitor.general;
 
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.Properties;
 
@@ -27,8 +28,7 @@ public class LibLocalAgent implements Agent {
 	{
 		Properties properties = new Properties();
 		try {
-			System.out.println(CONFIG_FILE);
-			properties.load(this.getClass().getResourceAsStream(CONFIG_FILE));
+			properties.load(new FileInputStream(CONFIG_FILE));
 			resource = (Resource) Class.forName(properties.getProperty(RESOURCE_TAG)).newInstance();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block

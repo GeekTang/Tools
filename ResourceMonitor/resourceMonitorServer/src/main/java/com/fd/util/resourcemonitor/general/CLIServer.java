@@ -110,17 +110,17 @@ public class CLIServer implements Server {
 
 	private class CLIRunner extends Thread {
 		private boolean isStarted = false;
-		private OutputStreamWriter writer = null;
+		private OutputStreamWriter agentWriter = null;
 
 		public CLIRunner(OutputStream output) {
-			writer = new OutputStreamWriter(output);
+			agentWriter = new OutputStreamWriter(output);
 		}
 
 		public void stopRunner() {
 			isStarted = false;
 			this.interrupt();
 			try {
-				writer.close();
+				agentWriter.close();
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -134,6 +134,7 @@ public class CLIServer implements Server {
 
 		public void run() {
 			while (isStarted) {
+				System.out.print(">");
 				BufferedReader reader = new BufferedReader(
 						new InputStreamReader(System.in));
 				String line;
@@ -168,8 +169,8 @@ public class CLIServer implements Server {
 			for (Agent agent : agentList) {
 				String agentInfor = AgentPrinter.print(agent);
 				try {
-					writer.write(agentInfor);
-					writer.flush();
+					agentWriter.write(agentInfor);
+					agentWriter.flush();
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
