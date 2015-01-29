@@ -61,6 +61,7 @@ public class CassandraMonitor implements Monitor {
 	}
 
 	public Information getResourceInfor() {
+		information = new GeneralInformation("Cassandra status: " + status.toString());
 		return information;
 	}
 

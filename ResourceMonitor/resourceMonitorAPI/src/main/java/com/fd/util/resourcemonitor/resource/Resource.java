@@ -1,12 +1,14 @@
 package com.fd.util.resourcemonitor.resource;
 
+import java.io.Serializable;
+
 /**
  * Represent physical resource, eg, disk, app server.
  * 
  * @author "Ares Tang"
  * 
  */
-public interface Resource {
+public interface Resource extends Serializable{
 
 	/**
 	 * @return The name of the resource.
@@ -26,10 +28,9 @@ public interface Resource {
 	 *         status, and the monitor may impact the original functionality.
 	 */
 	ResourceType getType();
-
-	/**
-	 * @return The resource monitor, which actually take the monitor action.
-	 */
-	Monitor getMonitor();
+	
+	Status getStatus();
+	
+	String getDetail();
 
 }

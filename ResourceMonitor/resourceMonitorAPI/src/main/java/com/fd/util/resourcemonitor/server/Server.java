@@ -20,7 +20,7 @@ public interface Server {
 	
 	boolean config(Properties properties);
 	
-	boolean register(Agent agent);
+	boolean register(Object agent);
 	
 	String getName();
 	

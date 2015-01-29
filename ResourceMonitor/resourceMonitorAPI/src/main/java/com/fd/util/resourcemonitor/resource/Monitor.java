@@ -1,5 +1,7 @@
 package com.fd.util.resourcemonitor.resource;
 
+import java.io.Serializable;
+
 /**
  * Resource monitor, which take the action to monitor the resource, and return
  * the status. And also the monitor could take long time monitor and analyze the
@@ -12,7 +14,7 @@ package com.fd.util.resourcemonitor.resource;
  * @author "Ares Tang"
  * 
  */
-public interface Monitor {
+public interface Monitor extends Serializable{
 
 	/**
 	 * @return Describe how it monitor the resource and what's the impact, some

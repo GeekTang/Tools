@@ -19,9 +19,9 @@ public class AgentPrinter {
 		
 		String resourceDescription = agent.getResource().getDescription();
 		
-		String resourceStatus = agent.getResource().getMonitor().getStatus().toString();
+		String resourceStatus = agent.getResource().getStatus().toString();
 		
-		String resourceStatusDetails = agent.getResource().getMonitor().getResourceInfor().getDetail();
+		String resourceStatusDetails = agent.getResource().getDetail();
 		
 		String result = "Agent: 				" + agentName + "\r\n"
 					  + "Resource Name: 		" + resourceName + "\r\n"
@@ -30,4 +30,5 @@ public class AgentPrinter {
 					  + "Resource Details: 		" + resourceStatusDetails + "\r\n";
 		return result;
 	}
+	
 }

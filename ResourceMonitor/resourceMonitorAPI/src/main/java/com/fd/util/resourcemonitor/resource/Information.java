@@ -1,6 +1,8 @@
 package com.fd.util.resourcemonitor.resource;
 
-public interface Information {
+import java.io.Serializable;
+
+public interface Information extends Serializable{
 	String getDetail();
 	
 //	Cause getCause();

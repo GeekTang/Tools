@@ -14,13 +14,15 @@ import java.io.OutputStreamWriter;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
+import java.rmi.Naming;
+import java.rmi.Remote;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 
 import com.fd.util.resourcemonitor.agent.Agent;
+import com.fd.util.resourcemonitor.agent.RemoteAgent;
 import com.fd.util.resourcemonitor.server.Server;
-import com.fd.util.resourcemonitor.util.AgentPrinter;
 
 /**
  * @author "Ares Tang"
@@ -30,11 +32,17 @@ public class CLIServer implements Server {
 
 	private static final String NAME = "Command Line Resource Monitor Server.";
 
-	private List<Agent> agentList = new ArrayList<Agent>();
+	private List<Agent> LocalAgnets = new ArrayList<Agent>();
+	
+	private List<RemoteAgent> remoteAgnets = new ArrayList<RemoteAgent>();
 
 	private Properties properties;
 
 	CLIRunner runner = null;
+	
+	private void writeToFile(String name, String content){
+		
+	}
 
 	/*
 	 * (non-Javadoc)
@@ -85,8 +93,14 @@ public class CLIServer implements Server {
 	 * @see com.fd.util.resourcemonitor.server.Server#register(com.fd.util.
 	 * resourcemonitor.agent.Agent)
 	 */
-	public boolean register(Agent agent) {
-		agentList.add(agent);
+	public boolean register(Object agent) {
+		if(agent instanceof Agent){
+			LocalAgnets.add((Agent)agent);
+		}
+		if(agent instanceof RemoteAgent){
+			remoteAgnets.add((RemoteAgent)agent);
+		}
+		
 		return true;
 	}
 
@@ -105,7 +119,7 @@ public class CLIServer implements Server {
 	 * @see com.fd.util.resourcemonitor.server.Server#getAgentList()
 	 */
 	public List<Agent> getAgentList() {
-		return agentList;
+		return LocalAgnets;
 	}
 
 	private class CLIRunner extends Thread {
@@ -142,16 +156,10 @@ public class CLIServer implements Server {
 					line = reader.readLine();
 					if (line.startsWith("register")) {
 						loadAgent(line);
-					}
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-
-				try {
-					line = reader.readLine();
-					if (line.startsWith("print")) {
+					}else if (line.startsWith("print")) {
 						printAgentInfor();
+					}else if(line.startsWith("remoteRegister")) {
+						registerRemote(line);
 					}
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
@@ -161,14 +169,22 @@ public class CLIServer implements Server {
 			}
 		}
 
-		private void printAgentInfor() {
-			for (Agent agent : agentList) {
-				agent.getResource().getMonitor().analyze(0L);
-			}
+		private void registerRemote(String line) {
+			String agentParameter = line.replaceFirst("remoteRegister", "").trim();
+		    try { 
+		    	Remote remote = Naming.lookup(agentParameter); 
+		    	RemoteAgent agent = (RemoteAgent)remote;   
+		    	remoteAgnets.add(agent);
+		    } catch (Exception e) { 
+		      e.printStackTrace(); 
+		    } 
+		}
 
-			for (Agent agent : agentList) {
-				String agentInfor = AgentPrinter.print(agent);
+		private void printAgentInfor() {
+			
+			for (RemoteAgent agent : remoteAgnets) {
 				try {
+					String agentInfor = agent.getData("status");
 					agentWriter.write(agentInfor);
 					agentWriter.flush();
 				} catch (IOException e) {
@@ -177,6 +193,7 @@ public class CLIServer implements Server {
 				}
 
 			}
+			
 		}
 
 		private void loadAgent(String line) {

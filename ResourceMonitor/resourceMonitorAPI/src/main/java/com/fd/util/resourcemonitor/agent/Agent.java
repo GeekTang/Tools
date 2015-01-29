@@ -35,5 +35,7 @@ public interface Agent {
 	 * @return The name of the agent.
 	 */
 	String getName();
+	
+	String getData(String type);
 
 }

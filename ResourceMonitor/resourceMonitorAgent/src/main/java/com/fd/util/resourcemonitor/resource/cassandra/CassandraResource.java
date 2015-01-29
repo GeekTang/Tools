@@ -6,7 +6,7 @@ package com.fd.util.resourcemonitor.resource.cassandra;
 import com.fd.util.resourcemonitor.resource.Monitor;
 import com.fd.util.resourcemonitor.resource.Resource;
 import com.fd.util.resourcemonitor.resource.ResourceType;
-import com.fd.util.resourcemonitor.resource.common.SimpleResourceType;
+import com.fd.util.resourcemonitor.resource.Status;
 
 /**
  * @author Ares Tang
@@ -22,7 +22,7 @@ public class CassandraResource implements Resource {
 			+ "the ifformation of this resource most related to the server's performance and status."
 			+ " Not the data structure.";
 
-	private ResourceType resourceType = new SimpleResourceType();
+	private ResourceType resourceType = ResourceType.Application;
 	
 	private Monitor monitor = new CassandraMonitor();
 
@@ -53,13 +53,13 @@ public class CassandraResource implements Resource {
 		return resourceType;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see com.fd.util.resourcemonitor.Resource.Resource#getMonitor()
-	 */
-	public Monitor getMonitor() {
-		return monitor;
+	public Status getStatus() {
+		// TODO Auto-generated method stub
+		return Status.offline;
+	}
+
+	public String getDetail() {
+		return "";
 	}
 
 }
